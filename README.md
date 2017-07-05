@@ -7,6 +7,12 @@ kata and with your names, e.g. `bowling-botimer-mattlach`.
 I plan on deleting all such branches with some regularity. This
 repository is for practice---not products.
 
+Your choices of starting branch:
+
+-   `primefactors`: List an integer's prime factors.
+-   `readroman`: Convert roman numeral strings to integers.
+-   `isbn`: Validate ISBN strings.
+
 How do I set up rspec?
 ----------------------
 
