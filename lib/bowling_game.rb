@@ -6,43 +6,68 @@ class BowlingGame
 
   def score
     total = 0
-    index = 0
+    frame = Frame.new(@rolls,0)
 
     10.times do
-      if strike?(index)
-        total += 10 + strike_bonus(index)
-        index += 1
-      elsif spare?(index)
-        total += 10 + spare_bonus(index)
-        index += 2
-      else
-        total += frame_total(index)
-        index += 2
-      end
+      total += frame.score
+      frame  = frame.successor
     end
 
     total
   end
 
   private
+end
 
-  def strike?(index)
-    @rolls[index] == 10
+class Frame
+  def initialize(rolls,index)
+    @rolls = rolls
+    @index = index
   end
 
-  def frame_total(index)
-    @rolls[index] + @rolls[index+1]
+  def [](offset)
+    @rolls[index+offset]
+  end
+
+  def strike?
+    self[0] == 10
+  end
+
+  def you_are_bad_at_bowling
+    self[0] + self[1]
   end
   
-  def strike_bonus(index)
-    @rolls[index+1] + @rolls[index+2]
+  def strike_bonus
+    successor[0] + successor[1]
   end
 
-  def spare_bonus(index)
-    @rolls[index+2]
+  def spare_bonus
+    successor[0]
   end
 
-  def spare?(index)
-    frame_total(index) == 10
+  def spare?
+    self[0] + self[1] == 10
   end
+
+  def score
+    if strike?
+      10 + strike_bonus
+    elsif spare?
+      10 + spare_bonus
+    else
+      you_are_bad_at_bowling
+    end
+  end
+
+  def successor
+    if strike?
+      Frame.new(@rolls,index + 1)
+    else
+      Frame.new(@rolls,index + 2)
+    end
+  end
+
+  private
+
+  attr_reader :index
 end
